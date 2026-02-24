@@ -156,11 +156,21 @@
     </main>
 </div>
 
-<script src="env.js"></script>
+<script>
+    // 智能识别环境：如果有 Vercel 注入的变量就用，没有就尝试找本地变量
+    // 这里我们直接定义，Vercel 部署时会自动替换或报错提示
+    window.SUPABASE_CONFIG = {
+        url: typeof SUPABASE_URL !== 'undefined' ? SUPABASE_URL : '',
+        key: typeof SUPABASE_KEY !== 'undefined' ? SUPABASE_KEY : ''
+    };
+</script> 
 
 <script>
     
-    const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const _db = supabase.createClient(
+    "https://awdiomtehljdtdaphrri.supabase.co", // 直接写死 URL 是安全的，它不是秘密
+    "sb_publishable_CHkntk8b79KM3HPhCi0J_w_ZlVOe4tD" // 这个是 Anon Key，也是可以公开的
+    );
 
     _db.auth.onAuthStateChange((event, session) => {
         const authScreen = document.getElementById('auth-screen');
